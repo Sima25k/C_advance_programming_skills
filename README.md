@@ -1,4 +1,4 @@
 # C&C++ from Beginning to Expert
-**This is all my notes from I firstly contacted programming to now!**
+**These are all my notes from the first time I contacted programming to now!**
 
 ***Thanks for your watch!!!***
