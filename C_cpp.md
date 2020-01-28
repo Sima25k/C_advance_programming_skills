@@ -1683,10 +1683,11 @@ fclose(fp);
 ```
 fwrite(buffer, size, count, fp);
 ```
-**buffer**：指针/地址，要写到文件中去的数据就在这个地址保存着
-**size**：要写入文件的字节数
-**count**：要写入多少个size的数据项
-**fp**：文件指针
+- **buffer**：指针/地址，要写到文件中去的数据就在这个地址保存着
+- **size**：要写入文件的字节数
+- **count**：要写入多少个size的数据项
+- **fp**：文件指针
+
 
 ```
 #include <string.h>
@@ -1737,11 +1738,12 @@ struct 结构体名
 ```
 fread(buffer, size, count, fp);
 ```
-**buffer**：指针/地址，从文件中读出的数据写在这个地址上
-**size**：要读入文件的字节数
-**count**：要读入多少个size的数据项
-**fp**：文件指针
-**返回值**：如果fread失败，则返回0；否则返回count值
+- **buffer**：指针/地址，从文件中读出的数据写在这个地址上
+- **size**：要读入文件的字节数
+- **count**：要读入多少个size的数据项
+- **fp**：文件指针
+- **返回值**：如果fread失败，则返回0；否则返回count值
+
 
 ```
 FILE *fp;
