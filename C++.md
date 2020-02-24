@@ -2659,33 +2659,13 @@ A* pa_t = new A;	//m_i = 随机值
 new 可以叫**关键字**/**操作符** `fn + F12`会跳转到operator new。
 
 可以在Debug状态下使用 `调试` -> `窗口` -> `反汇编`得到如下：
-![反汇编](https://img-blog.csdnimg.cn/20200221112413586.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70 =380x)
+![反汇编](https://img-blog.csdnimg.cn/20200221112413586.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
 这里可以看出`call  operator new`这个函数
-![malloc](https://img-blog.csdnimg.cn/20200221112904108.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70 =380x)
+![malloc](https://img-blog.csdnimg.cn/20200221112904108.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
 这里可以看到`call malloc`C语言中内存分配函数malloc(size传入堆中分配内存的大小)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200221114155946.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
 这里可以看到`call operator delete`这个函数
-##### 简化流程
-```mermaid
-flowchat
-st=>start: new一个对象
-e=>end: 释放该对象
-op1=>operation: 调用operator new函数
-op2=>operation: C语言的malloc()函数
-op3=>operation: C语言的free()函数
-op4=>operation: 调用operator delete函数
-op5=>operation: 调用类对象的构造函数
-op6=>operation: 调用类对象的析构函数
-cond=>condition: 是否为类对象
-op7=>operation: 调用operator new函数
-op8=>operation: C语言的malloc()函数
-op9=>operation: C语言的free()函数
-op10=>operation: 调用operator delete函数
 
-st->cond
-cond(yes)->op1->op2->op5->op6->op4->op3->e
-cond(no)->op7->op8->op10->op9->e
-```
 ## 02 new细节探秘，重载类内operator new、delete
 > 1 new内存分配细节探秘
 > 2 重载类内operator new和operator delete操作符
@@ -2943,9 +2923,7 @@ void* operator new (size_t size, void* ppoint)
 - **泛型编程**：Generic Programming
 
 ### 推荐书籍
-![STL](https://img-blog.csdnimg.cn/20200222153951654.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
-![C++标准库第二版](https://img-blog.csdnimg.cn/20200222153916548.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
->	**《STL源码剖析》**
+> **《STL源码剖析》**
 > **链接：** https://pan.baidu.com/s/1apswforzS6dp5-3S05SKeA 
 **提取码：** gk0l
 > **《C++标准库》**
