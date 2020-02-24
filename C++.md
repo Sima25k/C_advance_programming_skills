@@ -1996,7 +1996,7 @@ public:
 #### 通过tuple和递归调用展开参数包
 **实现思路**：计数器从0开始，每处理一个参数，计数器+1，一直到把所有参数处理完；最后搞一个模版偏特化，作为递归调用结束。
 
-```
+```cpp
 #include <tuple>
 //mycount用于统计，从0开始，mymaxcount表示参数数量
 template <int mycount, int maxmycount, typename... T>
