@@ -1773,7 +1773,7 @@ func(2, 4, mcfunc);	//T->int，F->int (*) (int, int)的函数指针
 成员函数都可以是函数模版，成为“**成员函数模版**”，虚函数。
 #### 类模版的成员函数模版
 
-```cpp
+```
 template <typename T>
 class A {
 public:
@@ -1790,7 +1790,7 @@ void A<T>::func(P& p) {}
 **Q**：为了防止在多个.cpp文件中都实例化相同的类模版
 **A**：C++11提出“**显式实例化**”
 
-```c
+```
 //“显式实例化”手段中的“实例化定义”
 template A<float>;
 //“显式实例化”手段中的“实例化声明”
@@ -1803,13 +1803,13 @@ extern template A<float>;	//不会再在本文件中生成这个实例化版本
 
 #### using定义模版别名(类型模版)
 
-```cpp
+```
 typedef std::map<std::string, int> map_s_i;
 ```
 但是`typedef`定义出的是固定的格式。
 **C++98中：**
 
-```cpp
+```
 template <typedef M>
 struct map_s
 {
@@ -1820,7 +1820,7 @@ map_s<int>::map_c mapl;
 ```
 **C++11中：**
 
-```cpp
+```
 template <typename T>
 using str_map = map<string, T>;
 ```
@@ -1837,7 +1837,7 @@ using str_map = map<string, T>;
 #### 类模版全特化
 **特化**：对特殊的类型(类型模版参数)进行特殊的处理。
 
-```cpp
+```
 template <typename T, typename F>
 struct test {
 	void functest() {
@@ -1857,7 +1857,7 @@ void test<double, float>::functest() {
 ```
 #### 类模版偏特化
 
-```cpp
+```
 //参数数量进行偏特化
 template <typename T, typename F, typename L>
 struct test {
@@ -1875,7 +1875,7 @@ struct test<const T> {
 ```
 #### 函数模版全特化
 
-```cpp
+```
 template <typename T, typename P>
 void func(T& tmprv, P& tmprc)
 {
@@ -1899,7 +1899,7 @@ void func(double& tmprv, int& tmprc)
 ### 可变参函数模版
 `...`**的位置很关键!**
 
-```cpp
+```
 template <typename... T>
 void myfunc(T... argc)
 {
@@ -1913,7 +1913,7 @@ T中存放的是**任意个不同类型**，称作**可变参类型**； argc中
 #### 参数包的展开
 一个参数`typename T`和一包参数`typename... F`，这种可变参函数模版更容易展开！
 
-```cpp
+```
 //参数包用迭代方式展开
 void func() {}	//终止迭代
 
@@ -1927,7 +1927,7 @@ void func(const T& src, const F&... stv)
 ### 可变参类模版
 #### 通过递归继承的方式展开参数包
 
-```cpp
+```
 template <typename... Args> class myclass { };	//为了保证可变参模版定义成功
 
 template<> class myclass<> {	//特化空模版
@@ -1972,7 +1972,7 @@ int main
 #### 通过递归组合方式展开参数包
 **组合关系(复合关系)**：*类A中包含B对象(即在类A定义内部定义一个类B的对象)。*
 
-```cpp
+```
 template <typename... Args> class myclass {};	//保证递归组合方式能够成功复合
 
 template <>
@@ -1996,7 +1996,7 @@ public:
 #### 通过tuple和递归调用展开参数包
 **实现思路**：计数器从0开始，每处理一个参数，计数器+1，一直到把所有参数处理完；最后搞一个模版偏特化，作为递归调用结束。
 
-```cpp
+```
 #include <tuple>
 //mycount用于统计，从0开始，mymaxcount表示参数数量
 template <int mycount, int maxmycount, typename... T>
@@ -2045,7 +2045,7 @@ int main()
 这是一个模版参数，前面都叫**类型模版参数**，这个**模版参数本身，又是一个模版。**
 **第种写法**(第二种直接放里面了)
 
-```cpp
+```
 template <
 			typename T,	//类型模版参数
 			template<class> class Container	//模版 模版参数
@@ -2091,7 +2091,7 @@ myclass<int, myvec> mvectobj;
 `()`，如果在类中重载了函数调用运算符`()`，那么就可以像使用函数一样使用该类的对象了，`对象(实参)`。
 `system("pause");`**暂停程序运行，等待任意键继续执行。**
 
-```cpp
+```
 class biggerthan
 {
 public:
@@ -2113,7 +2113,7 @@ int result = bgt(200);
 #### map模版
 `map`也是一个类模版/容器，但是不同于`vector`，map里每一项是两个数据，一个叫“**键**”，一个叫“**值**”。
 
-```cpp
+```
 int func (int value);
 #include <map>
 map<string, int (*) (int)> func_bag;	//map每项有两个数据，这里第一个数据是字符串，第二个数据是int(int)函数类型的指针
@@ -2126,7 +2126,7 @@ func_bag["src"](3);	//func_bag[键]就是map里面的值，也就是函数的入
 #### 标准库function类型介绍
 function也是**类模版**，要提供模版参数来表示该function类型能够表示的“对象的调用形式”。
 
-```cpp
+```
 #include <functional>
 functional<int(int)> f1 = func;	//统一调用形式，可以用内部重载()的类对象赋值给f1
 ```
