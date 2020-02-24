@@ -2663,7 +2663,7 @@ new 可以叫**关键字**/**操作符** `fn + F12`会跳转到operator new。
 这里可以看出`call  operator new`这个函数
 ![malloc](https://img-blog.csdnimg.cn/20200221112904108.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70 =380x)
 这里可以看到`call malloc`C语言中内存分配函数malloc(size传入堆中分配内存的大小)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200221114155946.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70 =380x)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200221114155946.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
 这里可以看到`call operator delete`这个函数
 ##### 简化流程
 ```mermaid
@@ -2700,7 +2700,7 @@ memset(ppchar, 0, 10);	//这里将这分配的十字节的内存初始化为0
 delete[] ppchar;
 ```
 内存的回收，实际上并不是只释放了分配的内存，影响的范围很广。给我一种感觉是：最初分配的多个变量的内存并不是连续的，会产生内存碎片，free为了避免碎片导致的内存没有足够的空间储存更大的信息，是一种很复杂的工作。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200221170436481.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70 =500x)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200221170436481.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
 ### 重载类内operator new和operator delete操作符
 ```cpp
 class A {
@@ -2791,7 +2791,7 @@ void A::operator delete(void *phead)
 	m_FreePosi = static_cast<A*>(phead);
 }
 ```
-![内存池](https://img-blog.csdnimg.cn/2020022120303920.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70 =400x)
+![内存池](https://img-blog.csdnimg.cn/2020022120303920.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
 这里介绍一个库 **`#include <ctime>`** 单位：ms
 1. `clock_t start, end;`
 2. `start = clock();`
@@ -2806,7 +2806,7 @@ void A::operator delete(void *phead)
 > 一般应用在内存池中，为了节省下每次指向下个内存池中的内存地址的指针
 
 **嵌入式指针工作原理：** 借用对象所占用内存空间的前4个字节，这4个字节用来链住空闲的内存块；一旦某一块被分配出去，这4个字节就可以正常使用。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2020022120392519.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70 =400x)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020022120392519.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
 ```cpp
 class Test_Embed {
 public:
@@ -2943,7 +2943,8 @@ void* operator new (size_t size, void* ppoint)
 - **泛型编程**：Generic Programming
 
 ### 推荐书籍
-![STL](https://img-blog.csdnimg.cn/20200222153951654.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70 =180x)![C++标准库第二版](https://img-blog.csdnimg.cn/20200222153916548.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70 =200x)
+![STL](https://img-blog.csdnimg.cn/20200222153951654.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
+![C++标准库第二版](https://img-blog.csdnimg.cn/20200222153916548.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
 >	**《STL源码剖析》**
 > **链接：** https://pan.baidu.com/s/1apswforzS6dp5-3S05SKeA 
 **提取码：** gk0l
@@ -2970,7 +2971,7 @@ void* operator new (size_t size, void* ppoint)
 >> `vector`
 
 ### 容器的分类
-![容器](https://img-blog.csdnimg.cn/20200222165004866.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70 =600x)
+![容器](https://img-blog.csdnimg.cn/20200222165004866.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
 - **顺序容器**(Sequence Container)：能控制插入位置
 	- `array` `vector` `deque` `list` `forward_list`
 	
@@ -2978,7 +2979,8 @@ void* operator new (size_t size, void* ppoint)
 	- `set` `multiset` `map` `multimap`
 - **无序容器**(Unordered Container)：C++11推出，元素位置不重要，重要的是否存在该元素
 	- `unordered_set` `unordered_multiset` `unordered_map` `unordered_multimap`
-![无序容器](https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNDEwMTIzNTE4Njky?x-oss-process=image/format,png =250x)![](https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNDEwMTIzNTI1NzM5?x-oss-process=image/format,png =250x)
+![无序容器](https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNDEwMTIzNTE4Njky?x-oss-process=image/format,png)
+![](https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNDEwMTIzNTI1NzM5?x-oss-process=image/format,png)
 ### 容器的说明
 #### array
 > 内存空间是连续的，大小是固定的
@@ -3004,7 +3006,7 @@ vector有一个“空间”的概念，**容器内存是紧挨着的**，故vect
 >> set/map
 >> unordered_set、unordered_multiset等
 
-![容器](https://img-blog.csdnimg.cn/20200222165004866.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70 =600x)
+![容器](https://img-blog.csdnimg.cn/20200222165004866.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
 ### deque和stack
 **`deque`** ：**双端数列**(double-ended queue) ，==分段连续内存==，以分段数组的形式存储。
 ```cpp 
@@ -3096,7 +3098,7 @@ mymap.erase(mymap.begin(), mymap.end());	//范围删除，等同于mymap.clear()
 - `deallocate(point, num)` 用于释放函数，point是指向分配内存的指针
 
 ↓图为侯捷老师讲授分配器时使用过的
-![分配器 侯捷](https://img-blog.csdnimg.cn/20200224001414378.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70 =600x)
+![分配器 侯捷](https://img-blog.csdnimg.cn/20200224001414378.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NDU1NTg4,size_16,color_FFFFFF,t_70)
 这里可以参考[学习资料集聚地—小破站](https://www.bilibili.com/video/av68567064?p=7)侯捷老师的STL源码剖析。
 ## 05 迭代器的概念和分类
 (这版今天更)
