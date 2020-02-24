@@ -1765,6 +1765,320 @@ func(2, 4, mcfunc);	//T->int，F->int (*) (int, int)的函数指针
 ```
 
 ## 04 成员函数模版，显式实例化、声明
+> 1 普通类的成员函数模版
+> 2 类模版的成员函数模版
+> 3 模版显式实例化，模版声明
+
+#### 普通类的成员函数模版
+成员函数都可以是函数模版，成为“**成员函数模版**”，虚函数。
+#### 类模版的成员函数模版
+
+```cpp
+template <typename T>
+class A {
+public:
+	template <typename P>
+	void func(P& p);
+};
+
+template <typename T>
+template <typename P>
+void A<T>::func(P& p) {}
+```
+类模版的成员函数(普通成员函数/模版成员函数)只有为程序所用才会实例化。
+#### 模版显式实例化、模版声明
+**Q**：为了防止在多个.cpp文件中都实例化相同的类模版
+**A**：C++11提出“**显式实例化**”
+
+```c
+//“显式实例化”手段中的“实例化定义”
+template A<float>;
+//“显式实例化”手段中的“实例化声明”
+extern template A<float>;	//不会再在本文件中生成这个实例化版本
+//目的是告诉编译器，在其他文件中已经有了该模版的实例化版本
+```
+## 05 using定义模版别名，显式指定模版参数
+> 1 using定义模版别名
+> 2 显式指定模版参数
+
+#### using定义模版别名(类型模版)
+
+```cpp
+typedef std::map<std::string, int> map_s_i;
+```
+但是`typedef`定义出的是固定的格式。
+**C++98中：**
+
+```cpp
+template <typedef M>
+struct map_s
+{
+	typedef map<string, M> map_c;
+};
+//很类似iterator定义了一个类型成员
+map_s<int>::map_c mapl;
+```
+**C++11中：**
+
+```cpp
+template <typename T>
+using str_map = map<string, T>;
+```
+## 06 模版全特化、偏特化(局部特化)
+> 1 类模版特化
+>> 类模版全特化
+>> 类模版偏特化
+>
+> 2 函数模版特化
+>> 函数模版全特化
+>> 函数模版偏特化
+
+### 类模版特化
+#### 类模版全特化
+**特化**：对特殊的类型(类型模版参数)进行特殊的处理。
+
+```cpp
+template <typename T, typename F>
+struct test {
+	void functest() {
+	cout << "调用了泛型版本" << endl; }
+};
+//特化类模版
+template <>
+struct test<int, double> {
+	void functest() {
+	cout << "调用了特化版本" << endl; }
+};
+//特化成员函数
+template <>
+void test<double, float>::functest() {
+	cout << "调用了特化版本的成员函数" << endl;
+}
+```
+#### 类模版偏特化
+
+```cpp
+//参数数量进行偏特化
+template <typename T, typename F, typename L>
+struct test {
+	... };
+template <typename F>
+struct test<double, F, int> {
+	... };
+//模版参数范围上的特化版本
+template <typename T>
+struct test {
+	... };
+template <typename T>
+struct test<const T> {
+	...};	//const特化版本
+```
+#### 函数模版全特化
+
+```cpp
+template <typename T, typename P>
+void func(T& tmprv, P& tmprc)
+{
+	... }
+template <>
+void func(double& tmprv, int& tmprc)
+{
+	... }
+```
+**函数模版没有偏特化!**
+**必须都有泛型模版，才可以定义特化模版。模版定义、实现都放在一个`.h`文件中。**
+
+## 07 可变参模版
+> 1 可变参函数模版
+>> 简单范例
+>> 参数包的展开
+>
+> 2 可变参类模版
+>> 通过递归继承方式展开参数包
+
+### 可变参函数模版
+`...`**的位置很关键!**
+
+```cpp
+template <typename... T>
+void myfunc(T... argc)
+{
+	cout << sizeof...(T) << endl;	//返回T...的类型数
+	cout << sizeof...(argc) << endl;
+}
+```
+T中存放的是**任意个不同类型**，称作**可变参类型**； argc中存放着**任意个形参**，称作**可变形参**。
+
+
+#### 参数包的展开
+一个参数`typename T`和一包参数`typename... F`，这种可变参函数模版更容易展开！
+
+```cpp
+//参数包用迭代方式展开
+void func() {}	//终止迭代
+
+template <typename T, typename... F>
+void func(const T& src, const F&... stv)
+{
+	cout << src << endl;
+	func(stv...);
+}
+```
+### 可变参类模版
+#### 通过递归继承的方式展开参数包
+
+```cpp
+template <typename... Args> class myclass { };	//为了保证可变参模版定义成功
+
+template<> class myclass<> {	//特化空模版
+public:
+	myclass() {
+		cout << "myclass<>::myclass()执行" << endl; 
+	}
+};
+
+template <typename First, typename... Others>
+class myclass<First, Others...> : private myclass<Others...>	//偏特化
+{
+public:
+	myclass() : m_i(0)
+	{
+		cout << "myclass::myclass执行了" << ' ' << "this: " << this << endl;
+	}
+	First m_i;
+};
+
+int main 
+{
+	myclass<int, float, double> cls();
+}
+```
+(**Debug结果：感觉挺难的**)
+
+- 首先声明**构造函数的执行是从父类->子类的**
+-  **实例化一个类对象，类`cls()`括号内的参数是根据构造函数中的参数确定的**
+- (每次取**可变参**)类对象`<int, float, double>`继承于`<float, double>`；`<float, double>`继承于`<double>`；`<double>`继承于`< >`。**模版参数同样也是特化版本**
+- 就这样`< >`是基类对象，控制台输出*"myclass<>::myclass()执行"*；紧接着`<double>`->`<float, double>`->`<int, float, double>`都会输出*"myclass:myclass执行了"*
+
+## 08 可变参模版续、模版模版参数
+> 1 可变参类模版
+>> 通过递归组合方式展开参数包
+>> 通过tuple和递归调用展开参数包
+>> 总结
+>
+> 2 模版模版参数
+
+### 可变参类模版
+#### 通过递归组合方式展开参数包
+**组合关系(复合关系)**：*类A中包含B对象(即在类A定义内部定义一个类B的对象)。*
+
+```cpp
+template <typename... Args> class myclass {};	//保证递归组合方式能够成功复合
+
+template <>
+class myclass<>
+{
+public:
+	myclass() {
+		cout << "myclass<>::myclass()执行" << endl;	}
+};
+
+template <typename First, typename... Others>
+class myclass<First, Others...>
+{
+public:
+	myclass(First prao, Others... pano) : m_i(0), m_t(pano)
+	First m_i;
+	
+	myclass<Others...> m_t;
+};
+```
+#### 通过tuple和递归调用展开参数包
+**实现思路**：计数器从0开始，每处理一个参数，计数器+1，一直到把所有参数处理完；最后搞一个模版偏特化，作为递归调用结束。
+
+```cpp
+#include <tuple>
+//mycount用于统计，从0开始，mymaxcount表示参数数量
+template <int mycount, int maxmycount, typename... T>
+class myclass {
+public:
+	static void mysfunc(const tuple<T...>& t)
+	{
+		cout << "value= " << get<mycount>(t) << endl;
+		//get是tuple元组的用法get<整数(表示位置从0开始)>(tuple对象)
+		myclass<mycount + 1, maxmycount, T...>::mysfunc(t);
+		//递归调用，计数器+1，取下一个tuple位置中的值
+	}
+};
+
+//特化一个结束版本
+template<int maxmycount, typename... T>
+class myclass<maxmycount, maxmycount, T...> {
+public:
+	static void mysfunc(const tuple<T...>& t)
+	{
+	}
+};
+
+template <typename... T>
+void myfunc(const tuple<T...>& t)
+{
+	myclass<0, sizeof...(T), T...>::mysfunc(t);	
+}
+
+int main()
+{
+	tuple<float, int ,double> mytuple(3.2f, 3, 5);
+	myfunc(mytuple);
+}
+```
+(**也挺难的**能看懂就好)
+
+- **get< >( )**是元组的一个**方法**，目的是取各索引下的值，0 ~ len - 1，< >中存索引，( )中存tuple对象名
+- 这个例子中的**可变模版参数T...**，实际作用是用来代表**tuple元组中保存的多种类型**
+- **myclass是一个计数器**，mycount是get的索引位，maxmycount是get方法的终止位，在函数myfunc中给mycount初始化为0，maxmycount初始化为传入元组内的元素个数`sizeof...(T)`
+- **计数器内每get到tuple的一个元素，就迭代调用mycount索引值+1的计数器版本，maxmycount不变**
+- 直到mycount==maxmycount时，也就是特化的版本，终止执行，**因为索引值执行到len - 1之后就没有内容了**
+
+### 模版模版参数
+**用于在模版中还要使用类模版的情况下！**
+这是一个模版参数，前面都叫**类型模版参数**，这个**模版参数本身，又是一个模版。**
+**第种写法**(第二种直接放里面了)
+
+```cpp
+template <
+			typename T,	//类型模版参数
+			template<class> class Container	//模版 模版参数
+			//template<typename W> typename Container
+			>
+class myclass
+{
+public:
+	T t_i;
+	Container<T> myc;
+	
+	myclass()
+	{
+		for (i = 0; i <10; i++)
+		{
+			myc.push_back(i);
+		}
+	}
+};
+
+template<typename T>
+using myvec = vector<T, allocator<T>>;	//需要确定一个分配器，系统没能自己确定
+
+myclass<int, myvec> mvectobj;	
+//这里是因为vector有第二个参数allocator分配器，所以需要自己用using手动定义一个
+```
+(**理解**)
+
+- 模板模板参数`template<class/typename> class/typename 名字`
+	- **这里的class不代表类定义**，而是和typename可互换
+	- 下面使用`Container<T>`时，第一个typename系统确定为T，第二个确定为class(类)
+- `using myvec = vector<T, allocator<T>>`是固定写法
+
 
 
 # 八、未归类知识点
@@ -1777,7 +2091,7 @@ func(2, 4, mcfunc);	//T->int，F->int (*) (int, int)的函数指针
 `()`，如果在类中重载了函数调用运算符`()`，那么就可以像使用函数一样使用该类的对象了，`对象(实参)`。
 `system("pause");`**暂停程序运行，等待任意键继续执行。**
 
-```
+```cpp
 class biggerthan
 {
 public:
@@ -1797,24 +2111,23 @@ int result = bgt(200);
 **调用参数**和**返回值类型**相同，叫做“**调用形式**”相同。
 一种调用形式对应一个**函数类型**(如`int(int)`)。
 #### map模版
-**`map`**也是一个类模版/容器，但是不同于`vector`，map里每一项是两个数据，一个叫“**键**”，一个叫“**值**”。
+`map`也是一个类模版/容器，但是不同于`vector`，map里每一项是两个数据，一个叫“**键**”，一个叫“**值**”。
 
-```
+```cpp
 int func (int value);
 #include <map>
 map<string, int (*) (int)> func_bag;	//map每项有两个数据，这里第一个数据是字符串，第二个数据是int(int)函数类型的指针
-func_bag.insert("src", func);
+func_bag.insert({"src", func});
 //map<string, function<int (int)> func_bag = {{"src", func}};
 
 func_bag["src"](3);	//func_bag[键]就是map里面的值，也就是函数的入口地址
 ```
-**`insert({ , })`**用于向map中插入对象。map也有迭代器(回忆：vector的insert功能是用迭代器(指针)向它指向的地址插入对象)
+`insert({ , })`用于向map中插入对象。map也有迭代器(回忆：vector的insert功能是用迭代器(指针)向它指向的地址插入对象)
 #### 标准库function类型介绍
 function也是**类模版**，要提供模版参数来表示该function类型能够表示的“对象的调用形式”。
 
-```
+```cpp
 #include <functional>
 functional<int(int)> f1 = func;	//统一调用形式，可以用内部重载()的类对象赋值给f1
 ```
-## 02 万能引用universal reference
 
